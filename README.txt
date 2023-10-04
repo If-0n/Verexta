@@ -1,5 +1,5 @@
 To run the selfbot make sure you have python
-3.7 or up or else this may not work correctly!
+3.8 or up or else this may not work correctly!
 
 Place your token in the config.json file
 
