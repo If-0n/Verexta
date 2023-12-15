@@ -1,7 +1,5 @@
 To run the selfbot make sure you have python
-3.8 or up or else this may not work correctly!
-
-Place your token in the config.json file
+3.9 or up or else this may not work correctly!
 
 To get you discord token you can go to discord.com and open inspect
 element in there you should see a network tab somewhere click on it lastly
