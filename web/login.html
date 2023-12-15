@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <title>Verexta Login</title>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <h2 id="login-label">Login</h2>
+        <form onsubmit="return false;">
+            <label for="name">Token</label>
+            <input type="text" id="name" name="name" required>
+            <br>
+            <button type="button" id="connect-button" onclick="continueWithToken()">Continue</button>
+        </form>
+    </div>
+
+    <script src="eel.js"></script>
+    <script>
+        function continueWithToken() {
+            var token = document.getElementById("name").value;
+            eel.save_token(token)(function(response) {
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>
