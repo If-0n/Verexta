@@ -1,11 +1,10 @@
 pip uninstall discord
-
 pip install colorama
-
 pip install asyncio
-
 pip install discord.py-self
-
 pip install mailtm
-
 pip install plyer
+pip install requests
+pip install discord
+pip uninstall discord
+pip install discord.py==1.7.3
