@@ -1,7 +1,12 @@
 from asyncio import tasks
 from itertools import cycle
 import json
+import re
+import string
+import sys
 import time
+import aiohttp
+from bs4 import BeautifulSoup
 from colorama import Fore
 import discord
 import eel
@@ -11,6 +16,10 @@ from mailtm import Email
 import random
 import asyncio
 import requests
+import urllib.parse
+import concurrent.futures
+import tls_client
+
 
 bot = commands.Bot(command_prefix='!', self_bot=True)
 
@@ -24,16 +33,34 @@ if eel.os.path.exists(config_path):
 
 eel.init('web')
 
+
 @bot.event
 async def on_connect():
+    userid = bot.user.id
     global login_time
-    login_time = time.time()
+    # login_time = time.time()         #V3
+    # eel.js_update_uptime()           #V3
     notification.notify(
         title='Verexta',
         message='Logged in successfully!',
         app_icon=None,
         timeout=10,
     )
+
+
+PIPES = "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||"
+
+
+IMAGE = 'https://cdn.discordapp.com/attachments/1178861688439721994/1185581768175263744/verexta.png?ex=65902210&is=657dad10&hm=f878b478789d71b37421b3f8321197144e01d0e6927e239df9fc7c65b49d0836&'
+
+def make_embed(content, section, image=None):
+    parsedcontent = urllib.parse.quote(content)
+
+    parsedauthor = urllib.parse.quote("VEREXTA V2")
+    parsedcolor = urllib.parse.quote("FF2D00")
+    url = f"{section}{PIPES}https://embedl.ink/?deg&provider=&providerurl=&author={parsedauthor}&color={parsedcolor}&media=thumbnail&mediaurl={image}&desc={parsedcontent}"
+    return url
+
 
 @eel.expose
 def save_token(token):
@@ -69,108 +96,198 @@ def launch():
         return 'failure'
 
 # Commands
+mode = config['mode']
 
 @bot.command()
 async def cmds(ctx):
     await ctx.message.delete()
-    await ctx.send("```List of all cmds\n\n 1:  troll\n 2:  utility\n 3:  Raid\n 4:  Misc```")
-    await ctx.send("```fix\nVerexta V2```")
-    print("Executed cmds")
+    if mode == 'codeblocks':
+        await ctx.send("```List of all cmds\n\n 1:  troll\n 2:  utility\n 3:  Raid\n 4:  Misc```")
+        await ctx.send("```fix\nVerexta V2```")
+    elif mode == 'embed':
+        content = "List of all cmds\n\n 1:  troll\n 2:  utility\n 3:  Raid\n 4:  Misc"
+        url = make_embed(content, "", IMAGE)
+        await ctx.send(url)
 
 @bot.command()
 async def troll(ctx):
     await ctx.message.delete()
-    await ctx.send("```Trolling Commands\n\n 1:  textchunk\n 2:  scare\n 3:  fucku\n 4:  ghostping```")
-    await ctx.send("```fix\nVerexta V2```")
-    print("Executed Troll")
+    if mode == 'codeblocks':
+        await ctx.send("```Trolling Commands\n\n 1:  textchunk\n 2:  scare\n 3:  fucku\n 4:  ghostping```")
+        await ctx.send("```fix\nVerexta V2```")
+    elif mode == 'embed':
+        content = "Trolling Commands\n\n 1:  textchunk\n 2:  scare\n 3:  fucku\n 4:  ghostping"
+        url = make_embed(content, "", IMAGE)
+        await ctx.send(url)
 
 @bot.command()
 async def utility(ctx):
     await ctx.message.delete()
-    await ctx.send("```Useful Commands\n\n 1:  mail\n 2:  whois\n 3:  nrand (num1 num2)\n 4:  cleardms\n 5:  exit```")
-    await ctx.send("```fix\nVerexta V2```")
-    print("Executed utility")
+    if mode == 'codeblocks':
+        await ctx.send("```Utility Commands\n\n 1:  mail\n 2:  whois (Ping User)\n 3:  nrand (num1 num2)\n 4:  cleardms\n 5:  exit```")
+        await ctx.send("```fix\nVerexta V2```")
+    elif mode == 'embed':
+        content = "Useful Commands\n\n 1:  mail\n 2:  whois\n 3:  nrand (num1 num2)\n 4:  cleardms\n 5:  exit"
+        url = make_embed(content, "", IMAGE)
+        await ctx.send(url)
 
 @bot.command()
 async def raid(ctx):
     await ctx.message.delete()
-    await ctx.send("```RAID CMDS\n\n 1:  DelChannels\n 2:  Purge\n 3:  Cspam (channel name, Number of channels)\n 4:  webhook (WEBHOOK, MESSGAE, NUM OF MESSAGES)\n 5:  createhook (Name)\n 6:  massmention (message)\n 7:  spam (Message To Spam) (Amount Of Times To Spam It)\n 7:  webraid (Number, Channel Name, Message)\n 8:  massmention [Change your message in the config]```")
-    await ctx.send("```fix\nVerexta V2```")
-    print("Executed Raid")
+    if mode == 'codeblocks':
+        await ctx.send("```RAID CMDS\n\n 1:  DelChannels\n 2:  Purge\n 3:  Cspam (channel name, Number of channels)\n 4:  webhook (WEBHOOK, MESSGAE, NUM OF MESSAGES)\n 5:  createhook (Name)\n 6:  spam (Num of msgs, message)\n 7:  webraid (Number, Channel Name, Limit, Message)\n 8:  massmention [Change your message in the config],\n!raid2 For Next Page```")
+        await ctx.send("```fix\nVerexta V2```")
+    elif mode == 'embed':
+        content = "RAID CMDS\n\n 1:  DelChannels\n 2:  Purge\n 3:  Cspam (channel name, Number of channels)\n 4:  webhook (WEBHOOK, MESSGAE, NUM OF MESSAGES)\n 5:  createhook (Name)\n 6:  spam (Num of msgs, message)\n 7:  webraid (Number, Channel Name, Limit, Message)\n 8:  massmention [Change your message in the config],\n!raid2 For Next Page"
+        url = make_embed(content, "", IMAGE)
+        await ctx.send(url)
+    
+@bot.command()
+async def raid2(ctx):
+    await ctx.message.delete()
+    if mode == 'codeblocks':
+        await ctx.send("```RAID 2 CMDS\n\n 1: rolespam (amount)\n 2: threadspam (Name, Amount)\n 3: pinspam (Amount)```")
+        await ctx.send("```fix\nVerexta V2```")
+    elif mode == 'embed':
+        content = "RAID 2 CMDS\n\n 1: rolespam (amount)\n 2: threadspam (Name, Amount)\n 3: pinspam (Amount)"
+        url = make_embed(content, "", IMAGE)
+        await ctx.send(url)
 
 @bot.command()
 async def misc(ctx):
     await ctx.message.delete()
-    await ctx.send("```MISC CMDS\n\n 1: Poll\n 2: Lenny\n 3: nick\n 4: rgif\n 5: info\n 6: pfp (@user)```")
-    await ctx.send("```fix\nVerexta V2```")
-    print("Executed MISC")
-
-
-
+    if mode == 'codeblocks':
+        await ctx.send("```MISC CMDS\n\n 1: Poll\n 2: Lenny\n 3: nick\n 4: rgif\n 5: info\n 6: pfp (@user)```")
+        await ctx.send("```fix\nVerexta V2```")
+    elif mode == 'embed':
+        content = "MISC CMDS\n\n 1: Poll\n 2: Lenny\n 3: nick\n 4: rgif\n 5: info\n 6: pfp (@user)"
+        url = make_embed(content, "", IMAGE)
+        await ctx.send(url)
 
 
 with open('config.json') as f:
     config = json.load(f)
 varient = config['varient']
 version = config['version']
-mmmessage = config['massmention']
+message1 = config['massmention']
+nitro_status = config['Nitro_toggle']
+afk_status = config['AFK_toggle']
+afk_msg = config['AFK']
 
-# Loading Proxies
+
+
+
+
+
+
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+
+# Dont mind all this.
+
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+# ------------------------------------------------ V3 ------------------------------------------------
+
 with open("proxies.txt", "r") as file:
-    proxies = [line.strip() for line in file.readlines()]
+    proxies = [line.strip() for line in file.readlines()] 
+
 
 @bot.command()
-async def spamroles(ctx):
+async def pinspam(ctx, count: int):
+    await ctx.message.delete()
+    amount = 0
+    channel = bot.get_channel(ctx.channel.id)
+    history = await channel.history(limit=count).flatten()
+
+    headers = {
+        'Authorization': TOKEN
+    }
+
+    for message in history:
+        amount += 1
+        url = f"https://discord.com/api/v9/channels/{channel.id}/pins/{message.id}"
+        r = requests.put(url, headers=headers)
+
+
+
+@bot.command()
+async def threadspam(ctx, name, amount):
+    await ctx.message.delete()
+
+    headers = {
+        'Authorization': TOKEN
+    }
+
+    data = {
+        'name': name,
+        'type': '11'
+    }
+    
+    for i in range(int(amount)):
+        url = f'https://discord.com/api/v9/channels/{ctx.channel.id}/threads'
+        response = requests.post(url, headers=headers, data=data)
+
+
+
+@bot.command()
+async def rolespam(ctx, amount):
     await ctx.message.delete()
     
-
+    headers = {
+        'Authorization': TOKEN
+    }
+    
+    for i in range(int(amount)):
+        url = f'https://discord.com/api/v9/guilds/{ctx.guild.id}/roles'
+        response = requests.post(url, headers=headers)
 
 @bot.command()
 async def massmention(ctx):
-
     await ctx.message.delete()
-    members = await ctx.guild.fetch_members()
 
-    for member in members:
-        if member.name and member.status != discord.Status.offline and not member.bot:
-            message = f"""{mmmessage}""" + member.mention
+    message_content = "Hello, "
+    member_list = [(member.name, member.id) for member in ctx.guild.members]
+    mention_list = " ".join(f"<@{member_id}>" for _, member_id in member_list)
+    message = f"{message_content} {mention_list}"
+    # Massmention is still broken btw fixed it a lil bit but only pings urself idk why ffs
+    await ctx.send(message)
 
-            try:
-                await ctx.send(message)
-            except discord.errors.HTTPException as e:
-                if e.status != 200:
-                    print("TimeOut: Waiting 5 secs..")
-                    await asyncio.sleep(5)  # Wait for 10 seconds
     notification.notify(
-    title = 'Verexta V2',
-    message = 'Mass Mention Completed!',
-    app_icon = None,
-    timeout = 1,
+        title='Verexta V2',
+        message='Mass Mention Completed!',
+        app_icon=None,
+        timeout=1,
 )
 
 @bot.command()
-async def webraid(ctx, number, channel_name, message):
+async def webraid(ctx, number, channel_name, limit, *, message):
+    await ctx.message.delete()
     guild = ctx.guild
     tasks = []
 
     async def create_channel_and_send_message():
         new_channel = await guild.create_text_channel(channel_name)
 
-        # Create a unique webhook for each channel
         webhook = await new_channel.create_webhook(name=f"Webhook-{new_channel.name}")
 
-        while True:
-            await asyncio.sleep(random.uniform(0.1, 0.3))
+        for i in range(int(limit)):
+            await asyncio.sleep(random.uniform(0.2, 0.3))
             try:
                 await webhook.send(content=message)
-                print(f"Message sent using webhook in channel {new_channel.name}")
             except Exception as e:
                 print(f"Error sending message in channel {new_channel.name}: {e}")
 
+
     for i in range(int(number)):
         tasks.append(create_channel_and_send_message())
-
-    # Wait for all tasks to complete
     await asyncio.gather(*tasks)
 
 
@@ -178,45 +295,70 @@ async def webraid(ctx, number, channel_name, message):
 
 @bot.command()
 async def pfp(ctx, user: discord.User):
-    avatar_url = user.avatar.url
+    await ctx.message.delete()
+    avatar_url = user.avatar_url
     await ctx.send(avatar_url)
 
 
 
 @bot.command()
-async def spam(ctx, message, amount):
+async def spam(ctx, amount, *, message):
+    await ctx.message.delete()
     try:
         amount = int(amount)
     except ValueError:
-        await ctx.send("Invalid amount. Please enter a valid number.")
+        print("Invalid amount. Please enter a valid number.")
         return
-    if amount <= 0 or amount > 100:
-        await ctx.send("Please enter a valid amount within a reasonable range.")
+    if amount <= 0 or amount > 125:
+        print("Please enter a valid amount within a reasonable range.")
         return
     for i in range(amount):
         await ctx.send(message)
 
 
-
-gif_urls = [
-    "https://media.discordapp.net/attachments/951919254041686087/976814223604727808/IMG_3598.gif",
-    "https://tenor.com/view/meme-music-fortnite-lebron-james-gif-25492927",
-    "https://tenor.com/view/wiggle-dance-wyoming-snake-gif-8014362",
-    "https://tenor.com/view/hitam-atau-black-laugh-white-teeth-gif-16766958",
-    "https://tenor.com/view/black-man-jumping-big-black-man-twerk-black-gif-22678838",
-    "https://tenor.com/view/black-man-meme-gif-26066035",
-]
-
 @bot.command()
 async def info(ctx):
+    await ctx.message.delete()
     print("Executed version")
     await ctx.send(f"{version}" + " | " + f"{varient}")
 
+
+
+
+
+giphy_api_key = "0UTRbFtkMxAplrohufYco5IY74U8hOes"
+giphy_base_url = "https://api.giphy.com/v1/gifs/"
+giphy_tag = "fail"
+giphy_type = "random"
+giphy_rating = "pg-13"
+giphy_url = f"{giphy_base_url}{giphy_type}?api_key={giphy_api_key}&tag={giphy_tag}&rating={giphy_rating}"
+
 @bot.command()
 async def rgif(ctx):
-    print("Executed rgif")
-    random_gif_url = random.choice(gif_urls)
-    await ctx.send(f"{random_gif_url}")
+    await ctx.message.delete()
+    response = requests.get(giphy_url)
+
+    if response.status_code == 200:
+        try:
+            data = response.json()
+            gif_url = data.get('data', {}).get('images', {}).get('original', {}).get('url')
+
+            if gif_url:
+                await ctx.send(gif_url)
+            else:
+                await ctx.send("Error: Couldn't find a valid GIF URL in the response.")
+        except ValueError as e:
+            await ctx.send(f"Error: {e}")
+    else:
+        await ctx.send(f"Error sending the GET request to the Giphy API. Status code: {response.status_code}")
+
+
+    
+    
+
+
+
+    
 
 @bot.command()
 async def createhook(ctx, name):
@@ -235,7 +377,7 @@ async def exit(ctx):
 @bot.command()
 async def ghostping(ctx, *, args):
     await ctx.message.delete()
-    await ctx.send('', delete_after=0.00005)
+    await ctx.send(' ', delete_after=0.00005)
     print("Executed ghostping")
 
 @bot.command()
@@ -258,15 +400,27 @@ async def textchunk(ctx):
 async def cspam(ctx, channel_name: str, number_of_channels: int):
     await ctx.message.delete()
     guild = ctx.guild
-    for i in range (number_of_channels):
-        channel = await guild.create_text_channel(channel_name)
 
-    #Delete Channels
+    async def create_channel(i):
+        await guild.create_text_channel(channel_name)
+
+    await asyncio.gather(*[create_channel(i) for i in range(number_of_channels)])
+
+    await print(f"Created {number_of_channels} channels with the name {channel_name}.")
+
+
+
+#Delete Channels
 @bot.command()
 async def delchannels(ctx):
     await ctx.message.delete()
-    for channel in ctx.guild.channels:
+
+    async def delete_channel(channel):
         await channel.delete()
+
+    tasks = [asyncio.create_task(delete_channel(channel)) for channel in ctx.guild.channels]
+    await asyncio.gather(*tasks)
+
     print("Executed DelChannels")
 
     #ClearDms
@@ -276,7 +430,6 @@ async def cleardms(ctx, number: int):
     msgs = await ctx.message.channel.history(limit=number).flatten()
     for msg in msgs:
         if msg.author.name == ctx.message.author.name:
-            await asyncio.sleep(3)
             await msg.delete()
     print("Executed cleardms")
 
@@ -284,7 +437,7 @@ async def cleardms(ctx, number: int):
 @bot.command()
 async def scare(ctx):
     await ctx.message.delete()
-    await ctx.send("https://media.discordapp.net/attachments/1053585082369179699/1057042872832106537/image0-2-1.gif")
+    await ctx.send("https://tenor.com/view/to-everyone-that-is-looking-for-this-spider-gif-gif-20691150")
     print("Executed scare")
 
     #fucku
@@ -339,8 +492,8 @@ async def mail(ctx):
     test.start(listener, interval=4)
     print(Fore.GREEN +  "\nWaiting for an email...")
 
-    #whois
 
+    #whois
 @bot.command()
 async def whois(ctx, user: discord.User):
     await ctx.message.delete()
@@ -358,22 +511,63 @@ async def nick(ctx, *, nickname: str):
         await ctx.send("I don't have permission to change your nickname.")
         print("Executer nick")
 
+
     #Purge
 @bot.command()
-async def purge(ctx):
+async def purge(ctx, count: int):
     await ctx.message.delete()
-    messages = await ctx.channel.history(limit=200).flatten()
-    my_messages = [m for m in messages if m.author == ctx.author] 
-    await ctx.channel.delete_messages(my_messages)
-    print("Executed purge")
+
+    async def delete_messages(messages):
+        for message in messages:
+            await message.delete()
+
+    channel = bot.get_channel(ctx.channel.id)
+    history = await channel.history(limit=count).flatten()
+    chunk_size = 100
+    chunks = [history[i:i + chunk_size] for i in range(0, len(history), chunk_size)]
+    await asyncio.gather(*(delete_messages(chunk) for chunk in chunks))
+
+
+
+def get_latest_version():
+    url = 'https://raw.githubusercontent.com/If-0n/Verexta/main/version.txt'
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        latest_version = response.text.strip()
+        
+        return latest_version
+    except requests.exceptions.RequestException as e:
+        print(f"Error: Unable to fetch the latest version. {e}")
+        return None
+    
+
 
 if __name__ == "__main__":
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-        TOKEN = config.get('token', '')
+    latest_version = get_latest_version()
+    if version == latest_version:
+        with open('config.json', 'r') as f:
+            config = json.load(f)
+            TOKEN = config.get('token', '')
 
-        if not TOKEN:
-            eel.start('login.html', size=(900, 550))
+            if not TOKEN:
+                eel.start('login.html', size=(850, 550))
+            else:
+                eel.start('index.html', size=(850, 550))
+                launch()
+    else:
+        choice = input("Looks Like There Is A New Update. Would You Like To Continue Anyways? (y/n) ---{ ")
+        if choice == 'y':
+            with open('config.json', 'r') as f:
+                config = json.load(f)
+                TOKEN = config.get('token', '')
+
+                if not TOKEN:
+                    eel.start('login.html', size=(850, 550), options={'port': 0})
+                else:
+                    eel.start('index.html', size=(850, 550), options={'port': 0})
+                    launch()
         else:
-            eel.start('index.html', size=(900, 550))
-            launch()
+            sys.exit()

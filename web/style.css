@@ -1,40 +1,40 @@
 body {
-    background: linear-gradient(40deg, #1A1A1A, #fc3d3d);
+    background: linear-gradient(45deg, #e03535, #d74c4c);
     animation: color 12s ease-in-out infinite;
     background-color: #1A1A1A;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Set the height to fill the viewport */
-    margin: 0; /* Remove default margin */
-    position: relative; /* Add relative positioning to the body */
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    margin: 0; 
+    position: relative; 
 }
 
 .title-container {
-    text-align: right; /* Center-align content inside the container */
+    text-align: right;
     color: aliceblue;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #1a1a1a; /* Optional background color for the container */
-    padding: 5px; /* Increase padding to make the container larger */
-    border-radius: 10px; /* Optional rounded corners for the container */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional box shadow */
-    position: absolute; /* Add absolute positioning */
-    top: 5%; /* Place it at the top of the screen */
-    left: 50%; /* Place it at 50% from the left */
-    transform: translateX(-50%); /* Center it horizontally */
+    background-color: #1a1a1a; 
+    padding: 5px; 
+    border-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+    position: absolute; 
+    top: 5%; 
+    left: 50%; 
+    transform: translateX(-50%); 
 }
 
 .container-1 {
-    text-align: center; /* Center-align content inside the container */
+    text-align: center; 
     color: aliceblue;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #1a1a1a; /* Optional background color for the container */
-    padding: 5px; /* Increase padding to make the container larger */
-    border-radius: 10px; /* Optional rounded corners for the container */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional box shadow */
-    position: absolute; /* Add absolute positioning */
-    top: center; /* Place it at the top of the screen */
-    left: 50%; /* Place it at 50% from the left */
-    transform: translateX(-50%); /* Center it horizontally */
+    background-color: #1a1a1a;
+    padding: 5px; 
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: center;
+    left: 50%;
+    transform: translateX(-50%);
 }
 

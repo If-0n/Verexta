@@ -1,12 +1,42 @@
 body {
-    background: linear-gradient(40deg,#1A1A1A, #fc3d3d);
-    animation: color 12s ease-in-out infinite;
-    background-color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+    background: none;
+}
+
+.bg {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Set the height to fill the viewport */
-    margin: 0; /* Remove default margin */
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(45deg, #4a3232, #fd3434, rgba(212, 88, 88, 0.933));
+    background-size: 300% 300%;
+    animation: color 12s ease-in-out infinite;
+    overflow: hidden; 
+}
+
+@keyframes color {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.container {
+    text-align: center;
+    color: aliceblue;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #161616;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    max-width: 400px;
 }
 
 #connect-button {
@@ -14,12 +44,14 @@ body {
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px; /* Adjust padding as needed */
-    margin-top: 15px; /* Increase margin-top to move the button down */
+    padding: 10px 20px;
+    margin-top: 15px;
     cursor: pointer;
+    transition-duration: 0.3s;
 }
 
 #connect-button:hover {
+    font-size: 15px;
     background-color: #ff5656;
 }
 
@@ -27,23 +59,14 @@ body {
     border: none;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-
-.container {
-    text-align: center; /* Center-align content inside the container */
-    color: aliceblue;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #1a1a1a; /* Optional background color for the container */
-    padding: 30px; /* Increase padding to make the container larger */
-    border-radius: 10px; /* Optional rounded corners for the container */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional box shadow */
+    width: 100%;
 }
 
 form {
-    margin-top: 20px; /* Add some space between the title and the form */
+    margin-top: 20px;
 }
 
 label {
-    display: block; /* Make labels block-level for better spacing */
-    margin-bottom: 5px; /* Add some space below labels */
+    display: block;
+    margin-bottom: 5px;
 }

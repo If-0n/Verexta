@@ -1,7 +1,11 @@
 {
     "token": "",
-    "massmention": "Enter your message for the mass mention here!",
-    "version": "2.0.0",
+    "massmention": "Mass Mention Message Here (Keep the space at the end) ",
+    "version": "2.1.1",
     "varient": "STABLE",
-    "mode": "Not in use yet btw does not matter if u change this"
+    "mode": "embed",
+    "AFK": "Im currently afk I will get back to you once im online. | AFK Reply By Verexta V2",
+    "AFK_toggle": "off",
+    "Nitro_toggle": "off",
+    "delay": ""
 }
