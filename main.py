@@ -19,6 +19,7 @@ import requests
 import urllib.parse
 import concurrent.futures
 import tls_client
+from pypresence import Presence
 
 
 bot = commands.Bot(command_prefix='!', self_bot=True)
@@ -33,6 +34,10 @@ if eel.os.path.exists(config_path):
 
 eel.init('web')
 
+rpc = Presence("1188277538150162514")
+rpc.connect()
+rpc.update(state="Fucking Discord at .gg/tycfNPuYKu", large_image="logo1")
+
 
 @bot.event
 async def on_connect():
@@ -40,6 +45,7 @@ async def on_connect():
     global login_time
     # login_time = time.time()         #V3
     # eel.js_update_uptime()           #V3
+
     notification.notify(
         title='Verexta',
         message='Logged in successfully!',
@@ -51,13 +57,13 @@ async def on_connect():
 PIPES = "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||"
 
 
-IMAGE = 'https://cdn.discordapp.com/attachments/1178861688439721994/1185581768175263744/verexta.png?ex=65902210&is=657dad10&hm=f878b478789d71b37421b3f8321197144e01d0e6927e239df9fc7c65b49d0836&'
+IMAGE = 'https://cdn.discordapp.com/attachments/1178861688439721994/1188283656708575272/Screenshot_2023-12-23_213325.png?ex=6599f665&is=65878165&hm=160c99ce7c8a3e9f1b971795dee5abffa22335b6a91353d9ed36dcf92e452c28&'
 
 def make_embed(content, section, image=None):
     parsedcontent = urllib.parse.quote(content)
 
     parsedauthor = urllib.parse.quote("VEREXTA V2")
-    parsedcolor = urllib.parse.quote("FF2D00")
+    parsedcolor = urllib.parse.quote("#FF4343")
     url = f"{section}{PIPES}https://embedl.ink/?deg&provider=&providerurl=&author={parsedauthor}&color={parsedcolor}&media=thumbnail&mediaurl={image}&desc={parsedcontent}"
     return url
 
@@ -170,35 +176,17 @@ with open('config.json') as f:
 varient = config['varient']
 version = config['version']
 message1 = config['massmention']
-nitro_status = config['Nitro_toggle']
-afk_status = config['AFK_toggle']
-afk_msg = config['AFK']
 
-
-
-
-
-
-
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-
-# Dont mind all this.
-
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
-# ------------------------------------------------ V3 ------------------------------------------------
 
 with open("proxies.txt", "r") as file:
     proxies = [line.strip() for line in file.readlines()] 
 
+
+
+@bot.command()
+async def clear(ctx):
+    lines = "᲼᲼" + "\n" * 1500 + "᲼᲼"
+    await ctx.send(lines)
 
 @bot.command()
 async def pinspam(ctx, count: int):
@@ -249,23 +237,22 @@ async def rolespam(ctx, amount):
         url = f'https://discord.com/api/v9/guilds/{ctx.guild.id}/roles'
         response = requests.post(url, headers=headers)
 
+
+
 @bot.command()
 async def massmention(ctx):
+    # No shit this wont work im just testing
     await ctx.message.delete()
+    with open("userdata.json", 'r') as f:
+        users = json.load(f) 
 
-    message_content = "Hello, "
-    member_list = [(member.name, member.id) for member in ctx.guild.members]
-    mention_list = " ".join(f"<@{member_id}>" for _, member_id in member_list)
-    message = f"{message_content} {mention_list}"
-    # Massmention is still broken btw fixed it a lil bit but only pings urself idk why ffs
-    await ctx.send(message)
+    for members in ctx.guild.members:
+        id = members.id
+        users["userid"] = {"ID":id}
+        print(f"ID: {id} has been saved to json file")
 
-    notification.notify(
-        title='Verexta V2',
-        message='Mass Mention Completed!',
-        app_icon=None,
-        timeout=1,
-)
+    with open("userdata.json", "w") as f:
+        json.dump(users, f, indent=4)
 
 @bot.command()
 async def webraid(ctx, number, channel_name, limit, *, message):
