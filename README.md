@@ -15,7 +15,7 @@ Obviously it is not going to be anything all that good like ethone but for a gue
    git clone https://github.com/If-0n/Verexta.git
    cd verexta
 
-   if your not using git then just download the zip
+if your not using git then just download the zip
 
 2. Install the required dependencies:
    pip install -r requirements.txt
