@@ -1,16 +1,30 @@
-To run the selfbot make sure you have python
-3.9 or up or else this may not work correctly!
+## Info
+Verexta is a selfbot written in python for people who dont feel like paying for one.
+Obviously it is not going to be anything all that good like ethone but for a guess its one of the best free selfbots rn
 
-To get you discord token you can go to discord.com and open inspect
-element in there you should see a network tab somewhere click on it lastly
-send a message to any channel or dm and once you send it you should see a new post request
-called messages in the network tab click on it and scroll till you find authorisation copy and paste the authorisation/token
-into the config
+## Setup
 
-run the install.bat to install all the librarys needed to run the bot!
-if you get an error saying discord was not found during the install.bat
-dont worry its just looking for the discord.py library
+### Prerequisites
 
-then run the run.bat file after the install is finished!
+- Python 3.9 or newer
 
-Support/feedback: https://discord.gg/wyM8TnxAh9
+### Installation
+
+1. Clone the repository (For most normal people u dont need to do this):
+   ```bash
+   git clone https://github.com/If-0n/Verexta.git
+   cd verexta
+
+if your not using git then just download the zip
+
+2. Install the required dependencies:
+   pip install -r requirements.txt
+
+
+### Usage
+Running the selfbot:
+    python main.py
+
+Editing the config:
+    You can toggle features like the nitro sniper and AFK reply from the config.json
+    THOSE FEATURES ARE IN THE 3.0 AND IS NOT OUT YET WILL BE SOON THOUGH
