@@ -2,6 +2,8 @@
 Verexta is a selfbot written in python for people who dont feel like paying for one.
 Obviously it is not going to be anything all that good like ethone but for a guess its one of the best free selfbots rn
 
+Discord: https://discord.gg/H4A6p2hv5T
+
 ## Setup
 
 ### Prerequisites
