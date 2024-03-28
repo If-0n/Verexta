@@ -1,7 +1,12 @@
 {
-    "token": "",
+    "token": "MTA1MDExMzcwOTQxNjEyODU3NA.Gdehan.Ml-b4LVFEzK09UVO9viQUcFvWnmKdGMYyb4JOY",
     "massmention": "Mass Mention Message Here (Keep the space at the end) ",
-    "version": "2.1.2",
-    "varient": "STABLE",
-    "mode": "embed"
+    "version": "3.0",
+    "varient": "RELEASE",
+    "mode": "embed",
+    "AFK": "Im currently afk I will get back to you once im online. | AFK Reply By Verexta V3",
+    "AFK_toggle": "off",
+    "Nitro_toggle": "on",
+    "RPC": "off",
+    "delay": ""
 }
