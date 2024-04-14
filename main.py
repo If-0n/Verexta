@@ -6,6 +6,7 @@ import string
 import sys
 import threading
 import time
+import aiohttp
 from bs4 import BeautifulSoup
 from colorama import Fore
 import discord
@@ -55,8 +56,8 @@ async def on_connect():
 
 
     notification.notify(
-        title='Verexta V3',
-        message='Logged in successfully!',
+        title='Verexta v3.1',
+        message='Connected To Discord',
         app_icon=None,
         timeout=10,
     )
@@ -164,10 +165,10 @@ async def raid(ctx):
 async def raid2(ctx):
     await ctx.message.delete()
     if mode == 'codeblocks':
-        await ctx.send("```RAID 2 CMDS\n\n 1: rolespam (amount)\n 2: threadspam (Name, Amount)\n 3: pinspam (Amount)```")
+        await ctx.send("```RAID 2 CMDS\n\n 1: rolespam (amount)\n 2: threadspam (Name, Amount)\n 3: pinspam (Amount)\n 4: pollspam (Amount)```")
         await ctx.send("```fix\nVerexta V3```")
     elif mode == 'embed':
-        content = "RAID 2 CMDS\n\n 1: rolespam (amount)\n 2: threadspam (Name, Amount)\n 3: pinspam (Amount)"
+        content = "RAID 2 CMDS\n\n 1: rolespam (amount)\n 2: threadspam (Name, Amount)\n 3: pinspam (Amount)\n 4: pollspam (Amount)"
         url = make_embed(content, "", IMAGE)
         await ctx.send(url)
 
@@ -194,9 +195,61 @@ message1 = config['massmention']
 nitro_status = config['Nitro_toggle']
 
 
+@bot.command()
+async def pollspam(ctx, amount: int):
+    channel = bot.get_channel(ctx.channel.id)
+    url = f'https://discord.com/api/v9/channels/{channel.id}/messages'
 
+    headers = {
+        "Authorization": f"{TOKEN}",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Language": "en-US,en;q=0.6",
+        "Content-Type": "application/json",
+        "Origin": "https://canary.discord.com",
+        "Referer": "https://canary.discord.com/channels/1159128651443482774/1199051726045581332",
+        "Sec-Ch-Ua": "\"Brave\";v=\"123\", \"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"123\"",
+        "Sec-Gpc": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+        "X-Debug-Options": "bugReporterEnabled",
+        "X-Discord-Locale": "en-US",
+        "X-Discord-Timezone": "America/Araguaina",
+        "X-Super-Properties": "eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiQ2hyb21lIiwiZGV2aWNlIjoiIiwic3lzdGVtX2xvY2FsZSI6ImVuLVVTIiwiYnJvd3Nlcl91c2VyX2FnZW50IjoiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMy4wLjAuMCBTYWZhcmkvNTM3LjM2IiwiYnJvd3Nlcl92ZXJzaW9uIjoiMTIzLjAuMC4wIiwib3NfdmVyc2lvbiI6IjEwIiwicmVmZXJyZXIiOiJodHRwczovL3NlYXJjaC5icmF2ZS5jb20vIiwicmVmZXJyaW5nX2RvbWFpbiI6InNlYXJjaC5icmF2ZS5jb20iLCJyZWZlcnJlcl9jdXJyZW50IjoiaHR0cHM6Ly9zZWFyY2guYnJhdmUuY29tLyIsInJlZmVycmluZ19kb21haW5fY3VycmVudCI6InNlYXJjaC5icmF2ZS5jb20iLCJyZWxlYXNlX2NoYW5uZWwiOiJjYW5hcnkiLCJjbGllbnRfYnVpbGRfbnVtYmVyIjoyODQxMjksImNsaWVudF9ldmVudF9zb3VyY2UiOm51bGx9"
+    }
 
+    payload = {
+        "content": "",
+        "poll": {
+            "question": {"text": "Verexta V3 On Top"},
+            "allow_multiselect": False,
+            "answers": [
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}},
+                {"poll_media": {"text": "Yes"}}
+            ],
+            "duration": 168,
+            "layout_type": 1,
+            "question": {"text": "Verexta V3 On Top"},
+            "text": "Verexta V3 On Top"
+        }
+    }
 
+    async def send_poll():
+        for _ in range(amount):
+            json_payload = json.dumps(payload)
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, headers=headers, data=json_payload) as response:
+                    status = response.status
+                    print(f"Sent poll with status: {status}")
+
+    await send_poll()
 
 @bot.command()
 async def listguilds(ctx):
@@ -905,7 +958,7 @@ with open("config.json", 'r') as c:
 
 @eel.expose
 def update_motd():
-    pastebin_url = 'https://pastebin.com/raw/hpL29ZgA'
+    pastebin_url = 'https://pastebin.com/raw/QsjkC98j'
     try:
         response = requests.get(pastebin_url)
         motd = "MOTD\n\n" + response.text
