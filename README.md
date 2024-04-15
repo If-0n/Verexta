@@ -28,6 +28,3 @@ if your not using git then just download the zip
 Running the selfbot:
     python main.py
 
-Editing the config:
-    You can toggle features like the nitro sniper and AFK reply from the config.json
-    THOSE FEATURES ARE IN THE 3.0 AND IS NOT OUT YET WILL BE SOON THOUGH
