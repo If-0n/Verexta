@@ -1,12 +1,11 @@
 {
-    "token": "MTA1MDExMzcwOTQxNjEyODU3NA.GYFNlD.bMMzFtGW2WbZNBF3XZB4iXN1QtPIP3ilC6L-zY",
+    "token": "MTA1MDExMzcwOTQxNjEyODU3NA.GXNgdS.h8JmFhvrW56b6j-OiLvGBsAytVGt-59yIa-Uh4",
     "massmention": "Mass Mention Message Here (Keep the space at the end) ",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "varient": "RELEASE",
     "mode": "embed",
     "AFK": "Im currently afk I will get back to you once im online. | AFK Reply By Verexta V3",
     "AFK_toggle": "off",
     "Nitro_toggle": "on",
-    "RPC": "off",
-    "delay": ""
+    "RPC": "off"
 }

@@ -1,4 +1,5 @@
 from asyncio import tasks
+import datetime
 from itertools import cycle
 import json
 import re
@@ -43,6 +44,7 @@ if eel.os.path.exists(config_path):
 
 @bot.event
 async def on_connect():
+    bot.start_time = datetime.datetime.now()
     userid = bot.user.id
     global login_time
     await bot.change_presence(status=discord.Status.dnd)
@@ -56,7 +58,7 @@ async def on_connect():
 
 
     notification.notify(
-        title='Verexta v3.1',
+        title='Verexta v3.0.2',
         message='Connected To Discord',
         app_icon=None,
         timeout=10,
@@ -66,7 +68,7 @@ async def on_connect():
 PIPES = "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||"
 
 
-IMAGE = 'https://cdn.discordapp.com/attachments/1117163334203080754/1220473635555381389/logo1.png?ex=660f11a6&is=65fc9ca6&hm=d497af4e5af98b5e64caf5ccf68a321a71b1349c8370fa8ac3d5807afc272b34&'
+IMAGE = 'https://cdn.discordapp.com/attachments/1081999276852387981/1230943954732847124/logo1.png?ex=663528e4&is=6622b3e4&hm=616925b2f8d9fe202550de89c936917206ccd5b911a6ed69ffa74840a0f387a6&'
 
 def make_embed(content, section, image=None):
     parsedcontent = urllib.parse.quote(content)
@@ -143,10 +145,21 @@ async def troll(ctx):
 async def utility(ctx):
     await ctx.message.delete()
     if mode == 'codeblocks':
-        await ctx.send("```Utility Commands\n\n 1:  mail\n 2:  whois (Ping User)\n 3:  nrand (num1 num2)\n 4:  cleardms\n 5:  exit\n 6: speechbubble```")
+        await ctx.send("```Utility 2 Cmds\n\n 1:  mail\n 2:  whois (Ping User)\n 3:  nrand (num1 num2)\n 4:  cleardms\n 5:  exit\n 6: speechbubble\n 7: copy (destination server's id)```")
         await ctx.send("```fix\nVerexta V3```")
     elif mode == 'embed':
-        content = "Useful Commands\n\n 1:  mail\n 2:  whois\n 3:  nrand (num1 num2)\n 4:  cleardms\n 5:  exit\n 6: speechbubble"
+        content = "Utility Commands\n\n 1:  mail\n 2:  whois\n 3:  nrand (num1 num2)\n 4:  cleardms\n 5:  exit\n 6: speechbubble\n 7: copy (destination server's id)"
+        url = make_embed(content, "", IMAGE)
+        await ctx.send(url)
+
+@bot.command()
+async def utility2(ctx):
+    await ctx.message.delete()
+    if mode == 'codeblocks':
+        await ctx.send("```Utility 2 Cmds\n\n 1: listguilds\n 2: vanish\n 3: stopwatch (options: start, pause, end)\n 4: mute (@user)```")
+        await ctx.send("```fix\nVerexta V3```")
+    elif mode == 'embed':
+        content = "Utility 2 Cmds\n\n 1: listguilds\n 2: vanish\n 3: stopwatch (options: start, pause, end)\n 4: mute (@user)"
         url = make_embed(content, "", IMAGE)
         await ctx.send(url)
 
@@ -183,6 +196,16 @@ async def misc(ctx):
         url = make_embed(content, "", IMAGE)
         await ctx.send(url)
 
+@bot.command()
+async def misc2(ctx):
+    await ctx.message.delete()
+    if mode == 'codeblocks':
+        await ctx.send("```MISC CMDS\n\n 1: uptime```")
+        await ctx.send("```fix\nVerexta V3```")
+    elif mode == 'embed':
+        content = "MISC CMDS\n\n 1: uptime"
+        url = make_embed(content, "", IMAGE)
+        await ctx.send(url)
 
 
 
@@ -195,8 +218,119 @@ message1 = config['massmention']
 nitro_status = config['Nitro_toggle']
 
 
+
+@bot.command()
+async def uptime(ctx):
+    await ctx.message.delete()
+    current_time = datetime.datetime.now()
+    uptime_duration = current_time - bot.start_time
+
+    days = uptime_duration.days
+    hours, remainder = divmod(uptime_duration.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    uptime_str = f"Uptime: {days} days, {hours} hours, {minutes} minutes, {seconds} seconds."
+    await ctx.send(uptime_str)
+
+
+
+@bot.command()
+async def mute(ctx, member: discord.User, duration: int):
+    await ctx.message.delete()
+    if ctx.author.guild_permissions.manage_roles:
+        muted_role = discord.utils.get(ctx.guild.roles, name="Muted")
+        if not muted_role:
+            muted_role = await ctx.guild.create_role(name="Muted")
+
+        await member.add_roles(muted_role)
+        await ctx.send(f"{member.mention} has been muted for {duration} seconds.")
+
+        try:
+            await member.send(f"You have been muted in the server for {duration} seconds.")
+        except discord.Forbidden:
+            await ctx.send("I couldn't send a DM to the user.")
+
+        await asyncio.sleep(duration)
+        await member.remove_roles(muted_role)
+        await ctx.send(f"{member.mention} has been unmuted after {duration} seconds.")
+
+    else:
+        await ctx.send("You do not have permission to use this command.")
+
+
+
+
+@bot.command()
+async def stopwatch(ctx, opt):
+    await ctx.message.delete()
+    if opt.lower() == "start":
+        await start_stopwatch(ctx)
+    elif opt.lower() == "stop":
+        await stop_stopwatch(ctx)
+    else:
+        await ctx.send("Invalid option. Please use `start` or `stop`.")
+
+async def start_stopwatch(ctx):
+    global start_time
+    start_time = time.time()
+    await ctx.send("Stopwatch started.")
+
+async def stop_stopwatch(ctx):
+    if 'start_time' in globals():
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        await ctx.send(f"Stopwatch stopped. Elapsed time: {elapsed_time:.2f} seconds.")
+        del globals()['start_time']
+    else:
+        await ctx.send("Stopwatch was not started.")
+
+@bot.command()
+async def vanish(ctx):
+    await ctx.message.delete()
+    guild_id = ctx.guild.id
+    author_id = ctx.author.id
+
+    url = f'https://discord.com/api/v9/guilds/{guild_id}/messages/search?author_id={author_id}'
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        json_data = response.json()
+
+        if "messages" in json_data:
+            deleted_count = 0
+            for message_list in json_data["messages"]:
+                for message in message_list:
+                    if "id" in message and "channel_id" in message:
+                        message_id = message["id"]
+                        channel_id = message["channel_id"]
+
+                        delete_url = f'https://discord.com/api/v9/channels/{channel_id}/messages/{message_id}'
+
+                        delete_response = requests.delete(delete_url, headers=headers)
+
+                        if delete_response.status_code == 204:
+                            deleted_count += 1
+                            print(f"Deleted message ID {message_id} in channel ID {channel_id}")
+                            if deleted_count % 10 == 0:
+                                print("Pausing for 5 seconds...")
+                                await asyncio.sleep(5)
+
+            print("Total messages deleted:", deleted_count)
+        else:
+            print("No messages found.")
+    else:
+        print("Failed to retrieve messages. Status code:", response.status_code)
+
+
+
+        
+        
+
+
 @bot.command()
 async def pollspam(ctx, amount: int):
+    await ctx.message.delete()
     channel = bot.get_channel(ctx.channel.id)
     url = f'https://discord.com/api/v9/channels/{channel.id}/messages'
 
@@ -253,6 +387,7 @@ async def pollspam(ctx, amount: int):
 
 @bot.command()
 async def listguilds(ctx):
+    await ctx.message.delete()
     url = 'https://discord.com/api/v9/users/@me/guilds'
 
     headers = {
