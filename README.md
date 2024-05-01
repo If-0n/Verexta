@@ -9,8 +9,11 @@ I will make an exe for each update except for hotfixes so if the
 latest version says hotfix you will have to go back to a regular update
 
 To install go to the releases and click the version you want (cant be a hotfix)
+
 Step 1) download the zip that does not have the word SRC in it.
+
 Step 2) Extract the zip
+
 Step 3) Double click the executable
 
 easy.
