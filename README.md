@@ -1,11 +1,22 @@
 ## Info
-Verexta is a selfbot written in python for people who dont feel like paying for one.
-Obviously it is not going to be anything all that good like ethone but for a guess its one of the best free selfbots rn
+Best free selfbot on all of cord.
+Our Discord: https://discord.gg/EnA4X7JQ5P
 
-Discord: https://discord.gg/EnA4X7JQ5P
 
-## Setup
+# Download
+## Installion With Executable
+I will make an exe for each update except for hotfixes so if the
+latest version says hotfix you will have to go back to a regular update
 
+To install go to the releases and click the version you want (cant be a hotfix)
+Step 1) download the zip that does not have the word SRC in it.
+Step 2) Extract the zip
+Step 3) Double click the executable
+
+easy.
+
+
+## Installing From SRC
 ### Prerequisites
 
 - Python 3.9 or newer
